@@ -1,1 +1,1 @@
-export 'race_repository.dart';
+export 'ride_repository.dart';

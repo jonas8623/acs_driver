@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:uber_ambev_test/presentation/blocs/blocs.dart';
 import 'package:uber_ambev_test/presentation/pages/pages.dart';
-import 'package:get_it/get_it.dart';
-
 import 'core/routes/route_config.dart';
 
 void main() {
@@ -17,8 +15,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<RaceBloc>(
-      create: (context) => RaceBloc(),
+    return BlocProvider<RideBloc>(
+      create: (context) => RideBloc(),
       child: MaterialApp(
         localizationsDelegates: const [
           GlobalWidgetsLocalizations.delegate,
@@ -31,6 +29,7 @@ class MyApp extends StatelessWidget {
         onGenerateRoute: RouteConfig().getRoutesConfig().getRoutes,
         theme: ThemeData(
           primaryColor: const Color.fromRGBO(250, 133, 63, 0.9),
+          primarySwatch: const Color.fromRGBO(250, 133, 63, 0.9),
         ),
         home: const HomePage(),
       ),

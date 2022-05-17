@@ -22,7 +22,7 @@ class AppRoutes {
       case routeRequestRaces : {
         return MaterialPageRoute<void>(
             settings: settings,
-            builder: (BuildContext context) => const RequestRacePage(),
+            builder: (BuildContext context) => const RegisterRidePage(),
             fullscreenDialog: true
         );
       }

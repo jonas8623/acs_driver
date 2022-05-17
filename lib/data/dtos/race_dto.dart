@@ -1,62 +1,64 @@
-import 'package:uber_ambev_test/domain/entities/entities.dart';
-
+import '../../domain/domain.dart';
 import '../data_constant.dart';
 
 // ignore: must_be_immutable
-class RaceDTO extends RaceEntity {
+class RideDTO extends RideEntity {
 
-  int? raceIDDTO;
-  String? ambevIDDTO;
-  String? pointOfOriginDTO;
-  String? cityDTO;
-  String? districtDTO;
-  //int? accentsAvailableDTO;
+  int? rideIdDTO;
+  String? ambevIdDTO;
+  String? addressOriginDTO;
+  String? cityDestinationDTO;
   String? dateDTO;
-  String? hourDTO;
-  String? createAtDTO;
-  String? passengerNameDTO;
+  double? priceDTO;
+  // String? hourDTO;
+  int? statusDTO;
+  List<PassengerEntity>? listPassengersDTO;
+  int? seatAvailableDTO;
 
-  RaceDTO({
-      this.raceIDDTO,
-      this.ambevIDDTO,
-      this.pointOfOriginDTO,
-      this.cityDTO,
-      this.districtDTO,
-      this.createAtDTO,
-      this.passengerNameDTO
+  RideDTO({
+      this.rideIdDTO,
+      this.ambevIdDTO,
+      this.addressOriginDTO,
+      this.cityDestinationDTO,
+      this.dateDTO,
+      this.priceDTO,
+      this.listPassengersDTO,
+      this.statusDTO,
+      this.seatAvailableDTO,
   }) : super(
-    raceID: raceIDDTO,
-    // ambevID: ambevIDDTO,
-    pointOfOrigin: pointOfOriginDTO,
-    city: cityDTO,
-    district: districtDTO,
-    createdAt: createAtDTO,
-    passengerName: passengerNameDTO
+    rideId: rideIdDTO,
+    ambevId: ambevIdDTO,
+    addressOrigin: addressOriginDTO,
+    cityDestination: cityDestinationDTO,
+    dateRide: dateDTO,
+    listPassengers: listPassengersDTO,
+    price: priceDTO,
+    seatAvailable: seatAvailableDTO!,
   );
 
   Map<String, Object?> toMap() {
     Map<String, Object?> map = {
       // 'ambevID': ambevIDDTO,
-      'pointOfOrigin': pointOfOriginDTO,
-      'city': cityDTO,
+      'pointOfOrigin': addressOriginDTO,
+      'city': cityDestinationDTO,
       'district': districtDTO,
-      'createdAt': createAtDTO,
-      'passengerName': passengerNameDTO
+      'createdAt': statusDTO,
+      'passengerName': listPassengersDTO
     };
-    if(raceIDDTO != null) {
-      map['raceID'] = raceIDDTO;
+    if(rideIdDTO != null) {
+      map['raceID'] = rideIdDTO;
     }
     return map;
   }
 
-  RaceDTO.fromMap(Map map) {
-   raceIDDTO = map[raceColumnID] ?? 0;
-   ambevIDDTO = map[raceColumnAmbev];
-   pointOfOriginDTO = map[raceColumnPointOfOrigin];
-   cityDTO = map[raceColumnCity];
+  RideDTO.fromMap(Map map) {
+   rideIdDTO = map[raceColumnID] ?? 0;
+   ambevIdDTO = map[raceColumnAmbev];
+   addressOriginDTO = map[raceColumnPointOfOrigin];
+   cityDestinationDTO = map[raceColumnCity];
    districtDTO = map[raceColumnDistrict];
    //accentsAvailableDTO = map['accentsAvailable'];
-   createAtDTO = map[raceColumnCreateAt];
-   passengerNameDTO = map[raceColumnPassengerName];
+   statusDTO = map[raceColumnCreateAt];
+   listPassengersDTO = map[raceColumnPassengerName];
   }
 }

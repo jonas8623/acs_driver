@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:uber_ambev_test/domain/entities/entities.dart';
 import 'package:uber_ambev_test/presentation/blocs/blocs.dart';
 import '../../data/dtos/race_dto.dart';
 
@@ -13,8 +12,8 @@ class ConfirmedRacesPage extends StatefulWidget {
 
 class _ConfirmedRacesPageState extends State<ConfirmedRacesPage> {
 
-  late final RaceBloc bloc;
-  final RaceEntity raceEntity = RaceEntity();
+  late final RideBloc bloc;
+  final RideEntity raceEntity = RideEntity();
 
   Widget _textDescription({required String description}) => Text('$description: ', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),);
   Widget _text({required String text}) => Text(text, style: const TextStyle(fontSize: 16, letterSpacing: 1.1),);
@@ -29,7 +28,7 @@ class _ConfirmedRacesPageState extends State<ConfirmedRacesPage> {
     ),);
   }
 
-  Widget _cards(RaceDTO raceDTO) {
+  Widget _cards(RideDTO raceDTO) {
     return Container(
         height: 257,
         width: double.infinity,
@@ -61,13 +60,13 @@ class _ConfirmedRacesPageState extends State<ConfirmedRacesPage> {
               ),
               _filledField('ID', '000000000'),
               const SizedBox(height: 8.0),
-              _filledField('Nome do Passageiro', '${raceDTO.passengerNameDTO}'),
+              _filledField('Nome do Passageiro', '${raceDTO.listPassengersDTO}'),
               const SizedBox(height: 8.0),
-              _filledField('Cidade de Destino','${raceDTO.cityDTO}'),
+              _filledField('Cidade de Destino','${raceDTO.cityDestinationDTO}'),
               const SizedBox(height: 8.0),
               _filledField('Bairro de Destino', '${raceDTO.districtDTO}'),
               const SizedBox(height: 8.0),
-              _filledField('Data e Hora', '${raceDTO.createAtDTO}'),
+              _filledField('Data e Hora', '${raceDTO.statusDTO}'),
               const SizedBox(height: 8.0),
               _filledField('Vagas disponiveis','2'),
             ],
@@ -78,7 +77,7 @@ class _ConfirmedRacesPageState extends State<ConfirmedRacesPage> {
 
   @override
   void initState() {
-     bloc = RaceBloc();
+     bloc = RideBloc();
      bloc.add(LoadRaceEvent());
     super.initState();
   }
@@ -93,13 +92,13 @@ class _ConfirmedRacesPageState extends State<ConfirmedRacesPage> {
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: SingleChildScrollView(
-        child: BlocBuilder<RaceBloc, RaceState>(
+        child: BlocBuilder<RideBloc, RideState>(
             bloc: bloc,
             builder: (context, state) {
               if (state is LoadingRaceState) {
                 return const Center(child: CircularProgressIndicator(
                     color: Color.fromRGBO(250, 133, 63, 0.9)),);
-              } else if (state is MessageErrorState) {
+              } else if (state is ErrorMessageState) {
                 return Center(
                   child: Text(state.message),);
               } else if (state is ListLoadSuccessState) {

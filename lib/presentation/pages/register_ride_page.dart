@@ -4,20 +4,19 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:uber_ambev_test/domain/entities/entities.dart';
 import 'package:uber_ambev_test/presentation/blocs/blocs.dart';
 import 'package:uber_ambev_test/presentation/components/components.dart';
 import 'package:intl/intl.dart';
 import '../../core/routes/routes.dart';
 
-class RequestRacePage extends StatefulWidget {
-  const RequestRacePage({Key? key}) : super(key: key);
+class RegisterRidePage extends StatefulWidget {
+  const RegisterRidePage({Key? key}) : super(key: key);
 
   @override
-  _RequestRacePageState createState() => _RequestRacePageState();
+  _RegisterRidePageState createState() => _RegisterRidePageState();
 }
 
-class _RequestRacePageState extends State<RequestRacePage> {
+class _RegisterRidePageState extends State<RegisterRidePage> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController departurePointOfTheRaceController = TextEditingController();
@@ -85,7 +84,7 @@ class _RequestRacePageState extends State<RequestRacePage> {
     );
   }
 
-  Widget _IDField() {
+  Widget _idField() {
     return TextFormField(
       initialValue: '00000000',
       readOnly: true,
@@ -178,7 +177,7 @@ class _RequestRacePageState extends State<RequestRacePage> {
     );
   }
 
-  Widget button(BuildContext context, RaceBloc bloc) {
+  Widget button(BuildContext context, RideBloc bloc) {
     return SizedBox(
       width: double.infinity,
       child: Padding(
@@ -210,7 +209,7 @@ class _RequestRacePageState extends State<RequestRacePage> {
   @override
   Widget build(BuildContext context) {
 
-    final raceBloc = BlocProvider.of<RaceBloc>(context);
+    final raceBloc = BlocProvider.of<RideBloc>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -219,57 +218,69 @@ class _RequestRacePageState extends State<RequestRacePage> {
           backgroundColor: Theme.of(context).primaryColor,
       ),
       body: SingleChildScrollView(
-        child: BlocBuilder<RaceBloc, RaceState>(
-            bloc: raceBloc,
-            builder: (context, state) {
-              if (state is LoadingRaceState) {
-                return Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor),);
-              } else if (state is RaceInitialState) {
-                return Form(
-                    key: _formKey,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    child: Column(
-                      children: [
-                        _requestFields(),
-                        const SizedBox(height: 16.0,),
-                        _showTitle(title: 'ID'),
-                         _padding(_IDField()),
-                        const SizedBox(height: 16.0,),
-                        _showTitle(title: 'Nome do Passageiro'),
-                        _padding(
-                          _fields(controller: passengerNameController, keyboard: TextInputType.name, icon: Icons.info_outline_rounded,),),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 16.0, top: 12.0),
-                              child: FloatingActionButton(
-                                  onPressed: () {},
-                                  tooltip: 'Adicionar Passageiro',
-                                  child: const Icon(Icons.person_add_alt_1_outlined),
-                                  backgroundColor: Theme.of(context).primaryColor),
-                            ),
-                          ],
-                        ),
-                        _showTitle(title: 'Ponto de Partida'),
-                        _padding(_textFormField(context)),
-                        const SizedBox(height: 16.0,),
-                        _showTitle(title: 'Cidade de Destino'),
-                        _padding(_fields(controller: cityController, keyboard: TextInputType.text, icon: Icons.location_city,)),
-                        const SizedBox(height: 16.0,),
-                        _showTitle(title: 'Bairro de Destino'),
-                        _padding(_fields(controller: districtController, keyboard: TextInputType.streetAddress, icon: Icons.location_city),),
-                        const SizedBox(height: 16.0,),
-                        _showTitle(title: 'Data e Hora de Destino'),
-                        _padding(_dateTimePicker()),
-                        const SizedBox(height: 12.0,),
-                        button(context, raceBloc)
-                      ],
-                    ),
-                );
-              }
-              return Container();
+        child: BlocListener(
+          listener: (context, state) {
+            if (state is MessageRegistrationSuccessfulState) {
+              _displayMessage(state.message);
+              Timer(const Duration(milliseconds: 50), () => Navigator.pushNamed(context, AppRoutes.routeHome));
+            } else if (state is UnsuccessfulMessageRegistrationState) {
+              _displayMessage(state.message);
+            } else if(state is ErrorMessageState) {
+              _displayMessage(state.message);
             }
+          },
+          child: BlocBuilder<RideBloc, RideState>(
+              bloc: raceBloc,
+              builder: (context, state) {
+                if (state is LoadingRaceState) {
+                  return Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor),);
+                } else if (state is RideInitialState) {
+                  return Form(
+                      key: _formKey,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: Column(
+                        children: [
+                          _requestFields(),
+                          const SizedBox(height: 16.0,),
+                          _showTitle(title: 'ID'),
+                           _padding(_idField()),
+                          const SizedBox(height: 16.0,),
+                          _showTitle(title: 'Nome do Passageiro'),
+                          _padding(
+                            _fields(controller: passengerNameController, keyboard: TextInputType.name, icon: Icons.info_outline_rounded,),),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 16.0, top: 12.0),
+                                child: FloatingActionButton(
+                                    onPressed: () {},
+                                    tooltip: 'Adicionar Passageiro',
+                                    child: const Icon(Icons.person_add_alt_1_outlined),
+                                    backgroundColor: Theme.of(context).primaryColor),
+                              ),
+                            ],
+                          ),
+                          _showTitle(title: 'Ponto de Partida'),
+                          _padding(_textFormField(context)),
+                          const SizedBox(height: 16.0,),
+                          _showTitle(title: 'Cidade de Destino'),
+                          _padding(_fields(controller: cityController, keyboard: TextInputType.text, icon: Icons.location_city,)),
+                          const SizedBox(height: 16.0,),
+                          _showTitle(title: 'Bairro de Destino'),
+                          _padding(_fields(controller: districtController, keyboard: TextInputType.streetAddress, icon: Icons.location_city),),
+                          const SizedBox(height: 16.0,),
+                          _showTitle(title: 'Data e Hora de Destino'),
+                          _padding(_dateTimePicker()),
+                          const SizedBox(height: 12.0,),
+                          button(context, raceBloc)
+                        ],
+                      ),
+                  );
+                }
+                return Container();
+              }
+          ),
         ),
       ),
     );
@@ -284,21 +295,21 @@ class _RequestRacePageState extends State<RequestRacePage> {
     return formatDate(inputDate, [dd, '/', mm, '/', yyyy, ' ', HH, ':', nn]);
   }
 
-  _saveRepository(RaceBloc bloc) async {
+  _saveRepository(RideBloc bloc) async {
     if(_formKey.currentState!.validate()) {
-      bloc.add(SaveRaceEvent(race: RaceEntity(
+      bloc.add(SaveRaceEvent(race: RideEntity(
           pointOfOrigin: departurePointOfTheRaceController.text,
-          city: cityController.text,
+          cityDestination: cityController.text,
           district: districtController.text,
-          createdAt: getFormattedDate(createAtController.text),
-          passengerName: passengerNameController.text
+          dateRide: getFormattedDate(createAtController.text),
+          listPassengers: passengerNameController.text
       )),);
-      Timer(const Duration(milliseconds: 50), () => Navigator.pushNamed(context, AppRoutes.routeHome));
-      _displayMessage();
-      _resetFields();
+
+      // _displayMessage();
+      // _resetFields();
     }
   }
 
-  _displayMessage() => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Salvo com Sucesso')));
-  _resetFields() => _formKey.currentState!.reset();
+  _displayMessage(String message) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+  // _resetFields() => _formKey.currentState!.reset();
 }

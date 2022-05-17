@@ -1,13 +1,12 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:uber_ambev_test/data/dtos/race_dto.dart';
-import 'package:uber_ambev_test/domain/entities/entities.dart';
 import 'package:uber_ambev_test/domain/repositories/repositories.dart';
 import '../data_constant.dart';
 
-class RaceRepositoryImplement implements RaceRepository {
+class RideRepositoryImplement implements RideRepository {
 
-  late RaceDTO race;
+  late RideDTO race;
 
   Future<Database> _initializeDB() async {
     final databasePath = await getDatabasesPath();
@@ -37,14 +36,14 @@ class RaceRepositoryImplement implements RaceRepository {
   }
 
   @override
-  Future<List<RaceDTO>> fetchAll() async {
+  Future<List<RideDTO>> fetchAll() async {
     try {
       final Database database = await _initializeDB();
       List<Map<String, dynamic>> query = await database.query(raceTableName, orderBy: '$raceColumnCreateAt ASC');
 
       return List.generate(query.length, (index) {
         // log('FetchALL COM SUCESSO');
-        return RaceDTO.fromMap(query[index]);
+        return RideDTO.fromMap(query[index]);
       });
     } catch(e) {
       return [];
@@ -52,11 +51,11 @@ class RaceRepositoryImplement implements RaceRepository {
   }
 
   @override
-    Future save(RaceEntity race) async {
+    Future<bool?> save(RideEntity race) async {
       try {
         final Database database = await _initializeDB();
 
-        race.raceID = await database.rawInsert('''
+        race.rideId = await database.rawInsert('''
           INSERT INTO $raceTableName(
                 $raceColumnAmbev,
                 $raceColumnPointOfOrigin,
@@ -66,28 +65,28 @@ class RaceRepositoryImplement implements RaceRepository {
                 $raceColumnPassengerName
           )
           VALUES(
-             '${race.ambevID}',
+             '${race.ambevId}',
              '${race.pointOfOrigin}',
-             '${race.city}',
+             '${race.cityDestination}',
              '${race.district}',
-             '${race.createdAt}',
-             '${race.passengerName}'
+             '${race.dateRide}',
+             '${race.listPassengers}'
           )
         ''');
-        // log('Salvo com Sucesso');
+        return true;
       } catch(error) {
-        return;
+        return false;
       }
     }
 
   @override
-  Future update(RaceDTO race) async {
+  Future update(RideDTO race) async {
     final Database database = await _initializeDB();
     return await database.update(
         raceTableName,
         race.toMap(),
         where: "$raceColumnID = ?",
-        whereArgs: [race.raceIDDTO]
+        whereArgs: [race.rideIdDTO]
     );
   }
 }

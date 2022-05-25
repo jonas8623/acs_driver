@@ -1,12 +1,12 @@
-import 'package:uber_ambev_test/data/dtos/race_dto.dart';
+import 'package:uber_ambev_test/data/dtos/ride_dto.dart';
 import '../domain.dart';
 
 abstract class RideRepository {
 
-  Future<bool?> save(RideEntity race);
-  Future<List<RideDTO>> fetchAll();
+  Future<bool?> save(RideEntity ride);
+  Future<List<RideDto>> fetchAll();
   // Future<RaceDTO?> findById(int id);
   Future<int> delete(int id);
-  Future update(RideDTO race);
+  Future<int> update(RideDto ride);
 
 }

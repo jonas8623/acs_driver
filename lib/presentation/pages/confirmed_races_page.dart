@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uber_ambev_test/presentation/blocs/blocs.dart';
-import '../../data/dtos/race_dto.dart';
+import '../../data/dtos/ride_dto.dart';
+import '../../domain/domain.dart';
 
 class ConfirmedRacesPage extends StatefulWidget {
   const ConfirmedRacesPage({Key? key}) : super(key: key);
@@ -28,7 +29,7 @@ class _ConfirmedRacesPageState extends State<ConfirmedRacesPage> {
     ),);
   }
 
-  Widget _cards(RideDTO raceDTO) {
+  Widget _cards(RideDto rideDTO) {
     return Container(
         height: 257,
         width: double.infinity,
@@ -58,15 +59,17 @@ class _ConfirmedRacesPageState extends State<ConfirmedRacesPage> {
                   IconButton(icon: const Icon(Icons.delete, size: 30), onPressed: () {})
                 ],
               ),
-              _filledField('ID', '000000000'),
+              _filledField('ID', '${rideDTO.ambevIdDTO}'),
               const SizedBox(height: 8.0),
-              _filledField('Nome do Passageiro', '${raceDTO.listPassengersDTO}'),
+              _filledField('Nome do Passageiro', '${rideDTO.listPassengersDTO}'),
               const SizedBox(height: 8.0),
-              _filledField('Cidade de Destino','${raceDTO.cityDestinationDTO}'),
+              _filledField('Endereço de Partida', '${rideDTO.addressOriginDTO}'),
               const SizedBox(height: 8.0),
-              _filledField('Bairro de Destino', '${raceDTO.districtDTO}'),
+              _filledField('Cidade de Destino','${rideDTO.cityDestinationDTO}'),
               const SizedBox(height: 8.0),
-              _filledField('Data e Hora', '${raceDTO.statusDTO}'),
+              _filledField('Endereço de Destino', '${rideDTO.addressDestinationDTO}'),
+              const SizedBox(height: 8.0),
+              _filledField('Data e Hora', '${rideDTO.statusDTO}'),
               const SizedBox(height: 8.0),
               _filledField('Vagas disponiveis','2'),
             ],
@@ -78,7 +81,7 @@ class _ConfirmedRacesPageState extends State<ConfirmedRacesPage> {
   @override
   void initState() {
      bloc = RideBloc();
-     bloc.add(LoadRaceEvent());
+     bloc.add(LoadRideEvent());
     super.initState();
   }
 
@@ -95,14 +98,14 @@ class _ConfirmedRacesPageState extends State<ConfirmedRacesPage> {
         child: BlocBuilder<RideBloc, RideState>(
             bloc: bloc,
             builder: (context, state) {
-              if (state is LoadingRaceState) {
+              if (state is LoadingRideState) {
                 return const Center(child: CircularProgressIndicator(
                     color: Color.fromRGBO(250, 133, 63, 0.9)),);
               } else if (state is ErrorMessageState) {
                 return Center(
                   child: Text(state.message),);
               } else if (state is ListLoadSuccessState) {
-                  final raceList = state.races;
+                  final raceList = state.listRides;
                   return ListView.builder(
                     shrinkWrap: true,
                     physics: const ScrollPhysics(),

@@ -1,13 +1,16 @@
-import 'dart:async';
 import 'package:date_format/date_format.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:uber_ambev_test/data/dtos/ride_dto.dart';
+import 'package:uber_ambev_test/domain/usecases/date_time_format_usecase/date_time_format_implement_usecase.dart';
+import 'package:uber_ambev_test/domain/usecases/date_time_format_usecase/date_time_format_usecase.dart';
 import 'package:uber_ambev_test/presentation/blocs/blocs.dart';
 import 'package:uber_ambev_test/presentation/components/components.dart';
 import 'package:intl/intl.dart';
 import '../../core/routes/routes.dart';
+import '../../domain/domain.dart';
 
 class RegisterRidePage extends StatefulWidget {
   const RegisterRidePage({Key? key}) : super(key: key);
@@ -19,12 +22,14 @@ class RegisterRidePage extends StatefulWidget {
 class _RegisterRidePageState extends State<RegisterRidePage> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  TextEditingController departurePointOfTheRaceController = TextEditingController();
-  final TextEditingController cityController = TextEditingController();
-  final TextEditingController districtController = TextEditingController();
-  final TextEditingController createAtController = TextEditingController();
+  final TextEditingController ambevIdController = TextEditingController();
+  TextEditingController addressOriginController = TextEditingController();
+  final TextEditingController cityDestinationController = TextEditingController();
+  final TextEditingController addressDestinationController = TextEditingController();
+  final TextEditingController dateController = TextEditingController();
   final TextEditingController passengerNameController = TextEditingController();
   bool readOnly = false;
+  DateTimeFormatUseCase getFormattedDate = DateTimeFormatImplement();
 
   ComponentTextFormField _fields({
     required TextEditingController controller,
@@ -84,31 +89,11 @@ class _RegisterRidePageState extends State<RegisterRidePage> {
     );
   }
 
-  Widget _idField() {
-    return TextFormField(
-      initialValue: '00000000',
-      readOnly: true,
-      decoration: InputDecoration(
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(18),
-          borderSide: BorderSide(color: Theme.of(context).primaryColor,),
-        ),
-        prefixIcon: Icon(Icons.perm_device_information_outlined, color: Theme.of(context).primaryColor,),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(18),
-          borderSide: BorderSide(color: Theme.of(context).primaryColor,),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(18),
-        ),),
-    );
-  }
-
   Widget _textFormField(BuildContext context) {
       return Column(
         children: [
           TextFormField(
-            controller: departurePointOfTheRaceController,
+            controller: addressOriginController,
             readOnly: !readOnly,
             cursorColor: Theme.of(context).primaryColor,
             decoration: InputDecoration(
@@ -147,7 +132,7 @@ class _RegisterRidePageState extends State<RegisterRidePage> {
 
   DateTimePicker _dateTimePicker() {
     return DateTimePicker(
-      controller: createAtController,
+      controller: dateController,
       locale: const Locale('pt', 'BR'),
       icon: const Icon(Icons.calendar_today),
       lastDate: DateTime(2100),
@@ -191,7 +176,7 @@ class _RegisterRidePageState extends State<RegisterRidePage> {
                   borderRadius: BorderRadius.circular(16)
               ),
               child: TextButton.icon(
-                onPressed: () => _saveRepository(bloc),
+                onPressed: () async => _saveRepository(bloc),
                 icon: const Icon(Icons.add_circle, color: Colors.white),
                 label: const Text('Solicitar Corrida', style: TextStyle(color: Colors.white)),
               )
@@ -202,7 +187,7 @@ class _RegisterRidePageState extends State<RegisterRidePage> {
 
   @override
   void initState() {
-    departurePointOfTheRaceController = TextEditingController(text: 'Padrão');
+    addressOriginController = TextEditingController(text: 'Padrão');
     super.initState();
   }
 
@@ -218,11 +203,11 @@ class _RegisterRidePageState extends State<RegisterRidePage> {
           backgroundColor: Theme.of(context).primaryColor,
       ),
       body: SingleChildScrollView(
-        child: BlocListener(
+        child: BlocListener<RideBloc, RideState>(
           listener: (context, state) {
             if (state is MessageRegistrationSuccessfulState) {
               _displayMessage(state.message);
-              Timer(const Duration(milliseconds: 50), () => Navigator.pushNamed(context, AppRoutes.routeHome));
+              Navigator.pushNamed(context, AppRoutes.routeHome);
             } else if (state is UnsuccessfulMessageRegistrationState) {
               _displayMessage(state.message);
             } else if(state is ErrorMessageState) {
@@ -232,7 +217,7 @@ class _RegisterRidePageState extends State<RegisterRidePage> {
           child: BlocBuilder<RideBloc, RideState>(
               bloc: raceBloc,
               builder: (context, state) {
-                if (state is LoadingRaceState) {
+                if (state is LoadingRideState) {
                   return Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor),);
                 } else if (state is RideInitialState) {
                   return Form(
@@ -243,7 +228,7 @@ class _RegisterRidePageState extends State<RegisterRidePage> {
                           _requestFields(),
                           const SizedBox(height: 16.0,),
                           _showTitle(title: 'ID'),
-                           _padding(_idField()),
+                           _padding(_fields(controller: ambevIdController, keyboard: TextInputType.number, icon: Icons.app_registration_outlined, maxLength: 8)),
                           const SizedBox(height: 16.0,),
                           _showTitle(title: 'Nome do Passageiro'),
                           _padding(
@@ -261,14 +246,14 @@ class _RegisterRidePageState extends State<RegisterRidePage> {
                               ),
                             ],
                           ),
-                          _showTitle(title: 'Ponto de Partida'),
+                          _showTitle(title: 'Endereço de Partida'),
                           _padding(_textFormField(context)),
                           const SizedBox(height: 16.0,),
                           _showTitle(title: 'Cidade de Destino'),
-                          _padding(_fields(controller: cityController, keyboard: TextInputType.text, icon: Icons.location_city,)),
+                          _padding(_fields(controller: cityDestinationController, keyboard: TextInputType.text, icon: Icons.location_city,)),
                           const SizedBox(height: 16.0,),
-                          _showTitle(title: 'Bairro de Destino'),
-                          _padding(_fields(controller: districtController, keyboard: TextInputType.streetAddress, icon: Icons.location_city),),
+                          _showTitle(title: 'Endereço de Destino'),
+                          _padding(_fields(controller: addressDestinationController, keyboard: TextInputType.streetAddress, icon: Icons.location_city),),
                           const SizedBox(height: 16.0,),
                           _showTitle(title: 'Data e Hora de Destino'),
                           _padding(_dateTimePicker()),
@@ -286,23 +271,24 @@ class _RegisterRidePageState extends State<RegisterRidePage> {
     );
   }
 
-  String getFormattedDate(String date) {
-    var localDate = DateTime.parse(date).toLocal();
-
-    var inputFormat = DateFormat('yyyy-MM-dd HH:mm');
-    var inputDate = inputFormat.parse(localDate.toString());
-
-    return formatDate(inputDate, [dd, '/', mm, '/', yyyy, ' ', HH, ':', nn]);
-  }
+  // String getFormattedDate(String date) {
+  //   var localDate = DateTime.parse(date).toLocal();
+  //
+  //   var inputFormat = DateFormat('yyyy-MM-dd HH:mm');
+  //   var inputDate = inputFormat.parse(localDate.toString());
+  //
+  //   return formatDate(inputDate, [dd, '/', mm, '/', yyyy, ' ', HH, ':', nn]);
+  // }
 
   _saveRepository(RideBloc bloc) async {
     if(_formKey.currentState!.validate()) {
-      bloc.add(SaveRaceEvent(race: RideEntity(
-          pointOfOrigin: departurePointOfTheRaceController.text,
-          cityDestination: cityController.text,
-          district: districtController.text,
-          dateRide: getFormattedDate(createAtController.text),
-          listPassengers: passengerNameController.text
+      bloc.add(SaveRideEvent(ride: RideEntity(
+          ambevId: ambevIdController.text,
+          addressOrigin: addressOriginController.text,
+          cityDestination: cityDestinationController.text,
+          addressDestination: addressDestinationController.text,
+          dateRide: getFormattedDate(dateController.text),
+          listPassengers: passengerNameController.text,
       )),);
 
       // _displayMessage();

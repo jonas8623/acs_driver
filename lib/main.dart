@@ -12,7 +12,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return BlocProvider<RideBloc>(
@@ -29,7 +28,7 @@ class MyApp extends StatelessWidget {
         onGenerateRoute: RouteConfig().getRoutesConfig().getRoutes,
         theme: ThemeData(
           primaryColor: const Color.fromRGBO(250, 133, 63, 0.9),
-          primarySwatch: const Color.fromRGBO(250, 133, 63, 0.9),
+          primarySwatch: Colors.deepOrange,
         ),
         home: const HomePage(),
       ),

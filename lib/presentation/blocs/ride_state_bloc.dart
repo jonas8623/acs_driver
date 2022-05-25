@@ -1,4 +1,5 @@
-import 'package:uber_ambev_test/data/dtos/race_dto.dart';
+import 'package:uber_ambev_test/data/dtos/ride_dto.dart';
+import 'package:uber_ambev_test/presentation/blocs/blocs.dart';
 
 abstract class RideState {}
 
@@ -10,7 +11,7 @@ class MessageRegistrationSuccessfulState extends RideState {
   MessageRegistrationSuccessfulState({required this.message});
 }
 
-class LoadingRaceState extends RideState {}
+class LoadingRideState extends RideState {}
 
 class UnsuccessfulMessageRegistrationState extends RideState {
 
@@ -32,8 +33,20 @@ class MessageListEmptyState extends RideState {
 
 class ListLoadSuccessState extends RideState {
 
-  final List<RideDTO>? races;
-  ListLoadSuccessState(this.races);
+  final List<RideDto>? listRides;
+  ListLoadSuccessState(this.listRides);
+}
+
+class RideMessageUpdatedSuccess extends RideState {
+
+  final String? message;
+  RideMessageUpdatedSuccess(this.message);
+}
+
+class MessageUpdatedUnsuccessfulState extends RideState {
+
+  final String message;
+  MessageUpdatedUnsuccessfulState(this.message);
 }
 
 

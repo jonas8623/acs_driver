@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:uber_ambev_test/domain/entities/passenger_entity.dart';
 
 // ignore: must_be_immutable
-class RideEntity extends Equatable{
+class RideEntity extends Equatable {
 
   int? rideId;
   String? ambevId;
   String? addressOrigin; // Ponto de Partida
   String? cityDestination; // Cidade
+  String? addressDestination; // Endreço de destino
   String? dateRide;// data horario da corrida
-  List<PassengerEntity>? listPassengers; // Retorna nome dos passageiros
+  String? listPassengers; // Retorna nome dos passageiros
   int? status;
   double? price;
   late int seatAvailable; //  Assentos disponiveis
@@ -20,6 +21,7 @@ class RideEntity extends Equatable{
      this.ambevId,
      this.addressOrigin,
      this.cityDestination,
+     this.addressDestination,
      this.dateRide,
      this.listPassengers,
      this.status,
@@ -43,9 +45,10 @@ class RideEntity extends Equatable{
     }
   }
 
+
   @override
   String toString() {
-    return 'RideEntity{rideId: $rideId, ambevId: $ambevId, addressOrigin: $addressOrigin, cityDestination: $cityDestination, dateRide: $dateRide, listPassengers: $listPassengers, status: $status, price: $price, seatAvailable: $seatAvailable}';
+    return 'RideEntity{rideId: $rideId, ambevId: $ambevId, addressOrigin: $addressOrigin, cityDestination: $cityDestination, addressDestination: $addressDestination, dateRide: $dateRide, listPassengers: $listPassengers, status: $status, price: $price, seatAvailable: $seatAvailable}';
   }
 
   @override

@@ -11,5 +11,4 @@ class DateTimeFormatImplement implements DateTimeFormatUseCase {
     final inputDate = inputFormat.parse(localDate.toString());
     return formatDate(inputDate, [dd, '/', mm, '/', yyyy, ' ', HH, ':', nn]);
   }
-
 }

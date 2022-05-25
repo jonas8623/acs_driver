@@ -76,7 +76,7 @@ class ComponentMenuDrawer extends StatelessWidget {
               text: 'Solicitar Corrida',
               onTap: () {
                 Navigator.of(context).pop();
-                Navigator.pushNamed(context, AppRoutes.routeRequestRaces);
+                Navigator.pushNamed(context, AppRoutes.routeRegisterRide);
               }
           ),
           const Divider(),
@@ -85,7 +85,7 @@ class ComponentMenuDrawer extends StatelessWidget {
               text: 'Corridas Cadastradas',
               onTap: () {
                 Navigator.of(context).pop();
-                Navigator.pushNamed(context, AppRoutes.routeConfirmedRaces);
+                Navigator.pushNamed(context, AppRoutes.routeRideList);
               }
           ),
         ],

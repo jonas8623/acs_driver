@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:uber_ambev_test/data/dtos/ride_dto.dart';
-import 'package:uber_ambev_test/data/repositories/repositories.dart';
-import 'package:uber_ambev_test/domain/repositories/repositories.dart';
-import 'package:uber_ambev_test/presentation/blocs/blocs.dart';
+
+import '../../data/data.dart';
+import '../../domain/domain.dart';
+import '../presentation.dart';
 
 class RideBloc extends Bloc<RideEvent, RideState> {
 

@@ -1,5 +1,4 @@
 import 'package:uber_ambev_test/data/dtos/ride_dto.dart';
-import 'package:uber_ambev_test/presentation/blocs/blocs.dart';
 
 abstract class RideState {}
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:uber_ambev_test/presentation/blocs/blocs.dart';
 import '../../data/dtos/ride_dto.dart';
 import '../../domain/domain.dart';
+import '../presentation.dart';
 
 class RideListPage extends StatefulWidget {
   const RideListPage({Key? key}) : super(key: key);

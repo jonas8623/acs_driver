@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:uber_ambev_test/presentation/blocs/blocs.dart';
-import 'package:uber_ambev_test/presentation/pages/pages.dart';
 import 'core/routes/route_config.dart';
+import 'presentation/presentation.dart';
 
 void main() {
   runApp(const MyApp());

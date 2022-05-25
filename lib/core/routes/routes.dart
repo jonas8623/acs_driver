@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:uber_ambev_test/presentation/pages/pages.dart';
+
+import '../../presentation/presentation.dart';
 
 class AppRoutes {
 
   static const String routeHome = "/home";
-  static const String routeRequestRaces = "/registerRace";
-  static const String routeConfirmedRaces = "/confirmedRaces";
+  static const String routeRegisterRide = "/registerRace";
+  static const String routeRideList = "/rideList";
 
   Route? getRoutes(RouteSettings settings) {
 
@@ -19,7 +20,7 @@ class AppRoutes {
         );
       }
 
-      case routeRequestRaces : {
+      case routeRegisterRide : {
         return MaterialPageRoute<void>(
             settings: settings,
             builder: (BuildContext context) => const RegisterRidePage(),
@@ -27,9 +28,9 @@ class AppRoutes {
         );
       }
 
-      case routeConfirmedRaces : {
+      case routeRideList : {
         return MaterialPageRoute<void>(
-            builder: (BuildContext context) => const ConfirmedRacesPage(),
+            builder: (BuildContext context) => const RideListPage(),
             fullscreenDialog: true
         );
       }

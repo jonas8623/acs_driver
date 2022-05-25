@@ -22,10 +22,10 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ComponentHomeButton(icon: Icons.add_circle, text: 'Solicitar Corrida', onTap: () {
-                Navigator.pushNamed(context, AppRoutes.routeRequestRaces);
+                Navigator.pushNamed(context, AppRoutes.routeRegisterRide);
               }),
               ComponentHomeButton(icon: Icons.list_alt_outlined, text: 'Corridas Cadastradas', onTap: () {
-                Navigator.pushNamed(context, AppRoutes.routeConfirmedRaces);
+                Navigator.pushNamed(context, AppRoutes.routeRideList);
               }),
             ],
           ),
@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ComponentHomeButton(icon: Icons.person_add_alt_1_outlined, text: 'Join', onTap: () {
-                Navigator.pushNamed(context, AppRoutes.routeConfirmedRaces);
+                Navigator.pushNamed(context, AppRoutes.routeRideList);
               }),
               ComponentHomeButton(icon: Icons.list_alt_outlined, text: 'Sobre', onTap: () {
                 log('Apertou no botão');

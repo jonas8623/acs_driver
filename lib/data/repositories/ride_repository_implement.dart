@@ -2,9 +2,8 @@ import 'dart:developer';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:uber_ambev_test/data/dtos/ride_dto.dart';
-import 'package:uber_ambev_test/domain/repositories/repositories.dart';
 import '../../domain/domain.dart';
-import '../data_constant.dart';
+import '../data_constant/data_constant.dart';
 
 class RideRepositoryImplement implements RideRepository {
   late RideDto ride;
@@ -14,7 +13,7 @@ class RideRepositoryImplement implements RideRepository {
     final path = join(databasePath, "ride.db");
 
      //await deleteDatabase(path);
-    // log("Deletado com sucesso");
+    //log("Deletado com sucesso");
 
     return openDatabase(path, version: 1,
         onCreate: (Database database, int newVersion) async {
@@ -67,6 +66,6 @@ class RideRepositoryImplement implements RideRepository {
   Future<int> update(RideDto ride) async {
     final Database database = await _initializeDB();
     return await database.update(rideTableName, ride.toMap(),
-        where: "$rideColumnId = ?", whereArgs: [ride.rideIdDTO]);
+        where: "$rideColumnId = ?", whereArgs: [ride.rideIdDto]);
   }
 }

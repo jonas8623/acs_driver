@@ -4,13 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:uber_ambev_test/data/dtos/ride_dto.dart';
-import 'package:uber_ambev_test/domain/usecases/date_time_format_usecase/date_time_format_implement_usecase.dart';
-import 'package:uber_ambev_test/domain/usecases/date_time_format_usecase/date_time_format_usecase.dart';
-import 'package:uber_ambev_test/presentation/blocs/blocs.dart';
-import 'package:uber_ambev_test/presentation/components/components.dart';
 import 'package:intl/intl.dart';
 import '../../core/routes/routes.dart';
 import '../../domain/domain.dart';
+import '../presentation.dart';
 
 class RegisterRidePage extends StatefulWidget {
   const RegisterRidePage({Key? key}) : super(key: key);
@@ -290,9 +287,6 @@ class _RegisterRidePageState extends State<RegisterRidePage> {
           dateRide: getFormattedDate(dateController.text),
           listPassengers: passengerNameController.text,
       )),);
-
-      // _displayMessage();
-      // _resetFields();
     }
   }
 

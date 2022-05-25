@@ -56,7 +56,7 @@ class RideBloc extends Bloc<RideEvent, RideState> {
     emit(LoadingRideState());
 
     try {
-      bool? editRice = (await _rideRepository.update(event.ride)) as bool?;
+      bool? editRice = (await _rideRepository.update(event.editRide));
 
       if (editRice!) {
         emit(RideMessageUpdatedSuccess('Corrida atualizada com sucesso'));

@@ -9,6 +9,9 @@ class DateTimeFormatImplement implements DateTimeFormatUseCase {
     final localDate = DateTime.parse(date).toLocal();
     final inputFormat = DateFormat('yyyy-MM-dd HH:mm');
     final inputDate = inputFormat.parse(localDate.toString());
-    return formatDate(inputDate, [dd, '/', mm, '/', yyyy, ' ', HH, ':', nn]);
+    final outputFormat = DateFormat('dd/MM/yyyy HH:mm');
+    final outputDate = outputFormat.format(inputDate);
+    return outputDate.toString();
+    //return formatDate(inputDate, [dd, '/', mm, '/', yyyy, ' ', HH, ':', nn]);
   }
 }

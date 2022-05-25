@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'core/routes/route_config.dart';
+import 'app/routes/app_config.dart';
 import 'presentation/presentation.dart';
 
 void main() {
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         supportedLocales: const [Locale('pt', 'BR')],
         debugShowCheckedModeBanner: false,
         title: 'ACS DRIVER',
-        onGenerateRoute: RouteConfig().getRoutesConfig().getRoutes,
+        onGenerateRoute: AppConfig().getRoutesConfig().getRoutes,
         theme: ThemeData(
           primaryColor: const Color.fromRGBO(250, 133, 63, 0.9),
           primarySwatch: Colors.deepOrange,

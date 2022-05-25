@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../core/routes/routes.dart';
+import '../../app/routes/app_routes.dart';
 
 class ComponentMenuDrawer extends StatelessWidget {
   const ComponentMenuDrawer({Key? key}) : super(key: key);

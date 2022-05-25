@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:uber_ambev_test/core/routes/routes.dart';
+
+import 'app_routes.dart';
 
 
-class RouteConfig extends StatelessWidget{
+class AppConfig extends StatelessWidget{
 
-  static const RouteConfig _instance = RouteConfig._internal();
-  const RouteConfig._internal();
+  static const AppConfig _instance = AppConfig._internal();
+  const AppConfig._internal();
 
-  factory RouteConfig() => _instance;
+  factory AppConfig() => _instance;
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:uber_ambev_test/presentation/components/components.dart';
-import '../../core/routes/routes.dart';
+import '../../app/routes/app_routes.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -55,8 +55,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text('ACS DRIVER',
-            style: TextStyle(color: Colors.white),),
+          title: const Text('ACS DRIVER', style: TextStyle(color: Colors.white),),
           centerTitle: true,
           backgroundColor: Theme.of(context).primaryColor,
       ),

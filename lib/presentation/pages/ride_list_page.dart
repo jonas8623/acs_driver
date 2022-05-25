@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uber_ambev_test/app/routes/app_routes.dart';
 import '../../data/dtos/ride_dto.dart';
 import '../../domain/domain.dart';
 import '../presentation.dart';
@@ -14,7 +15,7 @@ class RideListPage extends StatefulWidget {
 class _RideListPageState extends State<RideListPage> {
 
   late final RideBloc bloc;
-  final RideEntity raceEntity = RideEntity();
+  RideEntity? rideEntity;
 
   Widget _textDescription({required String description}) => Text('$description: ', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),);
   Widget _text({required String text}) => Text(text, style: const TextStyle(fontSize: 16, letterSpacing: 1.1),);
@@ -29,7 +30,7 @@ class _RideListPageState extends State<RideListPage> {
     ),);
   }
 
-  Widget _cards(RideDto rideDTO) {
+  Widget _cards(BuildContext context,RideDto rideDto) {
     return Container(
         height: 257,
         width: double.infinity,
@@ -55,21 +56,25 @@ class _RideListPageState extends State<RideListPage> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   IconButton(onPressed: () {}, icon: const Icon(Icons.person_add, size: 30)),
-                  IconButton(onPressed: () {}, icon: const Icon(Icons.edit, size: 30)),
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, AppRoutes.routeRegisterRide);
+                    },
+                  icon: const Icon(Icons.edit, size: 30)),
                   IconButton(icon: const Icon(Icons.delete, size: 30), onPressed: () {})
                 ],
               ),
-              _filledField('ID', '${rideDTO.ambevIdDto}'),
+              _filledField('ID', '${rideDto.ambevIdDto}'),
               const SizedBox(height: 8.0),
-              _filledField('Nome do Passageiro', '${rideDTO.listPassengersDto}'),
+              _filledField('Nome do Passageiro', '${rideDto.listPassengersDto}'),
               const SizedBox(height: 8.0),
-              _filledField('Endereço de Partida', '${rideDTO.addressOriginDto}'),
+              _filledField('Endereço de Partida', '${rideDto.addressOriginDto}'),
               const SizedBox(height: 8.0),
-              _filledField('Cidade de Destino','${rideDTO.cityDestinationDto}'),
+              _filledField('Cidade de Destino','${rideDto.cityDestinationDto}'),
               const SizedBox(height: 8.0),
-              _filledField('Endereço de Destino', '${rideDTO.addressDestinationDto}'),
+              _filledField('Endereço de Destino', '${rideDto.addressDestinationDto}'),
               const SizedBox(height: 8.0),
-              _filledField('Data e Hora', '${rideDTO.statusDto}'),
+              _filledField('Data e Hora', '${rideDto.dateDto}'),
               const SizedBox(height: 8.0),
               _filledField('Vagas disponiveis','2'),
             ],
@@ -113,7 +118,7 @@ class _RideListPageState extends State<RideListPage> {
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                        child: _cards(raceList[index]),
+                        child: _cards(context,raceList[index]),
                       );
                     }
                 );

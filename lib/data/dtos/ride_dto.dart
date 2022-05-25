@@ -13,7 +13,6 @@ class RideDto extends RideEntity {
   String? listPassengersDto;
   int? statusDto;
   double? priceDto;
-  // String? hourDTO;
   int? seatAvailableDto;
 
   RideDto({

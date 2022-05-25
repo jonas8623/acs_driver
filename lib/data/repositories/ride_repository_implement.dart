@@ -12,7 +12,7 @@ class RideRepositoryImplement implements RideRepository {
     final databasePath = await getDatabasesPath();
     final path = join(databasePath, "ride.db");
 
-     //await deleteDatabase(path);
+     // await deleteDatabase(path);
     //log("Deletado com sucesso");
 
     return openDatabase(path, version: 1,
@@ -63,7 +63,7 @@ class RideRepositoryImplement implements RideRepository {
   }
 
   @override
-  Future<int> update(RideDto ride) async {
+  Future update(RideDto ride) async {
     final Database database = await _initializeDB();
     return await database.update(rideTableName, ride.toMap(),
         where: "$rideColumnId = ?", whereArgs: [ride.rideIdDto]);

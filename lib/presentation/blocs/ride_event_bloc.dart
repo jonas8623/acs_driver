@@ -17,8 +17,8 @@ class SaveRideEvent extends RideEvent {
 
 class UpdateRideEvent extends RideEvent {
 
-  final RideDto ride;
-  UpdateRideEvent(this.ride);
+  final RideDto editRide;
+  UpdateRideEvent({required this.editRide});
 }
 
 

@@ -7,6 +7,6 @@ abstract class RideRepository {
   Future<List<RideDto>> fetchAll();
   // Future<RaceDTO?> findById(int id);
   Future<int> delete(int id);
-  Future<int> update(RideDto ride);
+  Future update(RideDto ride);
 
 }

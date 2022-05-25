@@ -3,9 +3,8 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:uber_ambev_test/data/dtos/ride_dto.dart';
-import 'package:intl/intl.dart';
-import '../../core/routes/routes.dart';
+import 'package:uber_ambev_test/data/data.dart';
+import '../../app/routes/app_routes.dart';
 import '../../domain/domain.dart';
 import '../presentation.dart';
 
@@ -27,6 +26,8 @@ class _RegisterRidePageState extends State<RegisterRidePage> {
   final TextEditingController passengerNameController = TextEditingController();
   bool readOnly = false;
   DateTimeFormatUseCase getFormattedDate = DateTimeFormatImplement();
+  RideEntity? editRide;
+
 
   ComponentTextFormField _fields({
     required TextEditingController controller,
@@ -168,14 +169,13 @@ class _RegisterRidePageState extends State<RegisterRidePage> {
               height: 60,
               decoration: BoxDecoration(
                   color: const Color.fromRGBO(250, 133, 63, 1),
-                  border: Border.all(
-                    color: const Color.fromRGBO(250, 133, 63, 1),),
+                  border: Border.all(color: const Color.fromRGBO(250, 133, 63, 1),),
                   borderRadius: BorderRadius.circular(16)
               ),
               child: TextButton.icon(
-                onPressed: () async => _saveRepository(bloc),
+                onPressed: () async => _validateRepository(bloc),
                 icon: const Icon(Icons.add_circle, color: Colors.white),
-                label: const Text('Solicitar Corrida', style: TextStyle(color: Colors.white)),
+                label: Text(editRide == null ? 'Solicitar Corrida' : 'Editar Corrida', style: const TextStyle(color: Colors.white)),
               )
           )
       ),
@@ -195,7 +195,7 @@ class _RegisterRidePageState extends State<RegisterRidePage> {
 
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Solicitar Corrida'),
+          title: Text(editRide == null ?'Solicitar Corrida' : 'Editar Corrida'),
           centerTitle: true,
           backgroundColor: Theme.of(context).primaryColor,
       ),
@@ -221,6 +221,7 @@ class _RegisterRidePageState extends State<RegisterRidePage> {
                       key: _formKey,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           _requestFields(),
                           const SizedBox(height: 16.0,),
@@ -254,7 +255,7 @@ class _RegisterRidePageState extends State<RegisterRidePage> {
                           const SizedBox(height: 16.0,),
                           _showTitle(title: 'Data e Hora de Destino'),
                           _padding(_dateTimePicker()),
-                          const SizedBox(height: 12.0,),
+                          const SizedBox(height: 26.0,),
                           button(context, raceBloc)
                         ],
                       ),
@@ -268,17 +269,8 @@ class _RegisterRidePageState extends State<RegisterRidePage> {
     );
   }
 
-  // String getFormattedDate(String date) {
-  //   var localDate = DateTime.parse(date).toLocal();
-  //
-  //   var inputFormat = DateFormat('yyyy-MM-dd HH:mm');
-  //   var inputDate = inputFormat.parse(localDate.toString());
-  //
-  //   return formatDate(inputDate, [dd, '/', mm, '/', yyyy, ' ', HH, ':', nn]);
-  // }
-
-  _saveRepository(RideBloc bloc) async {
-    if(_formKey.currentState!.validate()) {
+  _validateRepository(RideBloc bloc) async {
+    if (editRide == null && _formKey.currentState!.validate()) {
       bloc.add(SaveRideEvent(ride: RideEntity(
           ambevId: ambevIdController.text,
           addressOrigin: addressOriginController.text,
@@ -287,9 +279,17 @@ class _RegisterRidePageState extends State<RegisterRidePage> {
           dateRide: getFormattedDate(dateController.text),
           listPassengers: passengerNameController.text,
       )),);
+    } else if (editRide != null){
+      bloc.add(UpdateRideEvent(editRide: RideDto(
+          addressDestinationDto: editRide!.addressDestination,
+          addressOriginDto: editRide!.addressOrigin,
+          dateDto: editRide!.dateRide,
+          cityDestinationDto: editRide!.cityDestination,
+          ambevIdDto: editRide!.ambevId,
+          listPassengersDto: editRide!.listPassengers
+      )));
     }
   }
 
   _displayMessage(String message) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
-  // _resetFields() => _formKey.currentState!.reset();
 }

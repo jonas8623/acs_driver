@@ -4,14 +4,14 @@ import 'package:uber_ambev_test/presentation/blocs/blocs.dart';
 import '../../data/dtos/ride_dto.dart';
 import '../../domain/domain.dart';
 
-class ConfirmedRacesPage extends StatefulWidget {
-  const ConfirmedRacesPage({Key? key}) : super(key: key);
+class RideListPage extends StatefulWidget {
+  const RideListPage({Key? key}) : super(key: key);
 
   @override
-  _ConfirmedRacesPageState createState() => _ConfirmedRacesPageState();
+  _RideListPageState createState() => _RideListPageState();
 }
 
-class _ConfirmedRacesPageState extends State<ConfirmedRacesPage> {
+class _RideListPageState extends State<RideListPage> {
 
   late final RideBloc bloc;
   final RideEntity raceEntity = RideEntity();
@@ -59,17 +59,17 @@ class _ConfirmedRacesPageState extends State<ConfirmedRacesPage> {
                   IconButton(icon: const Icon(Icons.delete, size: 30), onPressed: () {})
                 ],
               ),
-              _filledField('ID', '${rideDTO.ambevIdDTO}'),
+              _filledField('ID', '${rideDTO.ambevIdDto}'),
               const SizedBox(height: 8.0),
-              _filledField('Nome do Passageiro', '${rideDTO.listPassengersDTO}'),
+              _filledField('Nome do Passageiro', '${rideDTO.listPassengersDto}'),
               const SizedBox(height: 8.0),
-              _filledField('Endereço de Partida', '${rideDTO.addressOriginDTO}'),
+              _filledField('Endereço de Partida', '${rideDTO.addressOriginDto}'),
               const SizedBox(height: 8.0),
-              _filledField('Cidade de Destino','${rideDTO.cityDestinationDTO}'),
+              _filledField('Cidade de Destino','${rideDTO.cityDestinationDto}'),
               const SizedBox(height: 8.0),
-              _filledField('Endereço de Destino', '${rideDTO.addressDestinationDTO}'),
+              _filledField('Endereço de Destino', '${rideDTO.addressDestinationDto}'),
               const SizedBox(height: 8.0),
-              _filledField('Data e Hora', '${rideDTO.statusDTO}'),
+              _filledField('Data e Hora', '${rideDTO.statusDto}'),
               const SizedBox(height: 8.0),
               _filledField('Vagas disponiveis','2'),
             ],
